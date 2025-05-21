@@ -1,0 +1,659 @@
+.chat-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background-color: #000000; /* Background - Black */
+  font-family: 'Inter', sans-serif; /* Gemini-style font */
+  color: #ffffff; /* Text Color - White */
+  transition: background-color 0.3s ease;
+  overflow: hidden; /* Prevent overflow */
+}
+
+/* Dark theme styles (Keep existing dark theme styles, though default is now dark) */
+.chat-container.dark-theme {
+  background-color: #202124; /* Slightly off-black Text Color */
+  color: #F8F9FA; /* Light Background */
+}
+
+.chat-header {
+  background: linear-gradient(to right, #0066ff, #ff3366); /* Gradient background */
+  padding: 1rem 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5); /* Darker shadows */
+  position: sticky; /* Fixed position */
+  top: 0;
+  z-index: 10;
+  backdrop-filter: blur(10px); /* Glassmorphism */
+  background-color: rgba(0, 0, 0, 0.3); /* Subtle transparent black for glass */
+}
+
+.chat-container.dark-theme .chat-header {
+  background: linear-gradient(to right, #0066ff, #ff3366); /* Darker gradient */
+  box-shadow: 0 2px 4px rgba(255, 255, 255, 0.1);
+  background-color: rgba(0, 0, 0, 0.1); /* Subtle transparent black for glass */
+}
+
+.chat-header h2 {
+  font-size: 1.4rem;
+  font-weight: 500;
+  margin: 0;
+  color: white; /* Title color contrasting with gradient */
+  display: flex;
+  align-items: center;
+  gap: 0.75rem; /* Increased gap for icon */
+}
+
+.chat-header-icon {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* Apply gradient border styles */
+  background-color: #1e1e1e; /* Dark background */
+  border-radius: 8px; /* Keep existing border radius */
+  border: 2px solid transparent; /* Transparent border for gradient */
+  background-image:
+    linear-gradient(#1e1e1e, #1e1e1e), /* inner background */
+    linear-gradient(to right, #0066ff, #ff3366); /* gradient border */
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+  transition: opacity 0.3s ease;
+}
+
+.chat-header-icon:hover {
+  opacity: 0.9; /* Subtle hover effect */
+}
+
+.chat-header-icon svg {
+  width: 100%;
+  height: 100%;
+  fill: white; /* Ensure icon inside is white */
+}
+
+.header-controls {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+/* Profile dropdown placeholder (basic styling) */
+.profile-dropdown-placeholder {
+    position: relative;
+    cursor: pointer;
+    padding: 0.5rem 0.8rem;
+    border-radius: 4px;
+    transition: background-color 0.2s ease;
+    color: white;
+    font-size: 0.9rem;
+}
+
+.profile-dropdown-placeholder:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.online-status {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: rgba(255, 255, 255, 0.9); /* White with slight transparency */
+  font-size: 0.85rem;
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  background-color: #4285F4; /* Bright Google Blue */
+  border-radius: 50%;
+  animation: pulse 1.5s infinite ease-out;
+  box-shadow: 0 0 8px rgba(66, 133, 244, 0.6); /* Glowing effect */
+}
+
+@keyframes pulse {
+  0% { transform: scale(0.8); opacity: 0.7; box-shadow: 0 0 4px rgba(66, 133, 244, 0.4); }
+  50% { transform: scale(1); opacity: 1; box-shadow: 0 0 12px rgba(66, 133, 244, 0.8); }
+  100% { transform: scale(0.8); opacity: 0.7; box-shadow: 0 0 4px rgba(66, 133, 244, 0.4); }
+}
+
+.logout-button {
+  /* Apply gradient button styles */
+  background-color: #1e1e1e; /* Dark background */
+  color: white; /* White text */
+  border: 2px solid transparent; /* Transparent border for gradient */
+  padding: 0.5rem 1rem; /* Keep existing padding */
+  border-radius: 4px; /* Keep existing border radius */
+  font-size: 0.9rem; /* Keep existing font size */
+  cursor: pointer;
+  background-image:
+    linear-gradient(#1e1e1e, #1e1e1e), /* inner background */
+    linear-gradient(to right, #0066ff, #ff3366); /* gradient border */
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+  transition: opacity 0.3s ease, transform 0.2s ease; /* Keep existing transform transition */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); /* Keep existing shadow */
+}
+
+.logout-button:hover {
+  opacity: 0.9; /* Subtle hover effect */
+  /* Keep existing transform: scale(1.05); if desired */
+}
+
+.messages-container {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem; /* Reduced gap */
+  background-color: #1a1a1a; /* Dark background, slightly lighter than black */
+  transition: background-color 0.3s ease;
+}
+
+.chat-container.dark-theme .messages-container {
+    background-color: #202124; /* Text Color */
+}
+
+/* Basic Scrollbar Styling */
+.messages-container::-webkit-scrollbar {
+  width: 8px;
+}
+
+.messages-container::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.messages-container::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.2); /* Light gray with transparency */
+  border-radius: 4px;
+}
+
+.chat-container.dark-theme .messages-container::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, 0.3);
+}
+
+.messages-container::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(255, 255, 255, 0.3); /* Lighter on hover */
+}
+
+.message {
+  max-width: 75%; /* Adjusted max width */
+  position: relative;
+  opacity: 0;
+  transform: translateY(10px);
+  animation: fadeInUp 0.3s ease forwards;
+  display: flex; /* Use flexbox for alignment */
+  gap: 0.75rem; /* Gap between avatar/header and content */
+  margin-bottom: 8px; /* Added margin bottom */
+  
+  /* Remove default bubble styling that will be overridden by specific classes */
+  padding: 0; 
+  border-radius: 0; 
+  background-color: initial; /* Reset to initial */
+  backdrop-filter: none;
+  border: none;
+  box-shadow: none;
+}
+
+.chat-container.dark-theme .message {
+    /* Keep dark theme overrides if necessary */
+}
+
+@keyframes fadeInUp {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.message-sent {
+  align-self: flex-end;
+  color: white;
+  font-weight: normal;
+  padding: 10px 15px;
+  border-radius: 999px;
+  width: fit-content;
+  max-width: 85%;
+  border: 2px solid transparent;
+
+  background-image: 
+    linear-gradient(#444, #444), /* Inner background color */
+    linear-gradient(to right, #0066ff, #ff3366); /* Border gradient */
+  background-origin: padding-box, border-box;
+  background-clip: padding-box, border-box;
+}
+
+
+.chat-container.dark-theme .message-sent {
+    background-color: #444; /* Ensure dark gray in dark mode */
+    color: white; /* Ensure white text in dark mode */
+}
+
+.message-received {
+  align-self: flex-start; /* Align left */
+  /* Apply gradient button styles */
+  padding: 8px 16px; /* Padding similar to button */
+  font-weight: bold; /* Bold text as in button */
+  color: #fff; /* White text */
+  background-color: #1e1e1e; /* Dark background */
+  border-radius: 999px; /* Very rounded corners */
+  border: 2px solid transparent; /* Transparent border for gradient */
+  background-image:
+    linear-gradient(#1e1e1e, #1e1e1e), /* inner background */
+    linear-gradient(to right, #0066ff, #ff3366); /* gradient border */
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+  /* Remove default message-received background and color handled by these rules */
+}
+
+.chat-container.dark-theme .message-received {
+    /* Keep dark theme consistent with the new style */
+    background-color: #1e1e1e;
+    color: #fff;
+}
+
+.message-bot {
+    /* Use message-received for styling, potentially add bot-specific overrides here if needed */
+}
+
+.message-avatar-container {
+    flex-shrink: 0; /* Prevent avatar from shrinking */
+    width: 32px; /* Adjusted avatar size */
+    height: 32px; /* Adjusted avatar size */
+    border-radius: 50%;
+    overflow: hidden;
+    background-color: #4285F4; /* Primary Accent as fallback background */
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    font-weight: bold;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); /* Soft shadow */
+}
+
+.chat-container.dark-theme .message-avatar-container {
+    background-color: #1a73e8; /* Darker Primary Accent */
+}
+
+.message-avatar {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.message-content-area {
+    flex-grow: 1; /* Allow content area to grow */
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem; /* Reduced gap */
+}
+
+.sender-name {
+  font-weight: 500;
+  font-size: 0.9rem; /* Adjusted font size */
+  color: #bdc1c6; /* Light gray for sender name */
+}
+
+.chat-container.dark-theme .sender-name {
+    color: #bdc1c6;
+}
+
+.message-text {
+  font-size: 1rem; /* Adjusted font size */
+  line-height: 1.5;
+  word-wrap: break-word;
+  white-space: pre-wrap; /* Preserve line breaks */
+  color: #ffffff; /* Ensure message text is white */
+}
+
+.chat-container.dark-theme .message-text {
+    color: #F8F9FA;
+}
+
+.message-timestamp {
+  font-size: 0.75rem;
+  color: #a0a0a0; /* Lighter gray for timestamp */
+  margin-top: 0.4rem; /* Adjusted margin */
+  text-align: right;
+}
+
+.chat-container.dark-theme .message-timestamp {
+    color: #a0a0a0;
+}
+
+.typing-indicator {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.6rem 1.2rem; /* Adjusted padding */
+  background-color: rgba(51, 51, 51, 0.9); /* Dark background with transparency */
+  border-radius: 18px;
+  width: fit-content;
+  margin: 0.5rem 0;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5); /* Darker shadow */
+  backdrop-filter: blur(8px); /* Glassmorphism */
+  border: 1px solid rgba(255, 255, 255, 0.1); /* Subtle white border */
+}
+
+.chat-container.dark-theme .typing-indicator {
+    background-color: rgba(0, 0, 0, 0.1); /* Black with transparency */
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    box-shadow: 0 1px 3px rgba(255, 255, 255, 0.1);
+}
+
+.typing-dots {
+  display: flex;
+  gap: 0.2rem; /* Reduced gap */
+}
+
+.typing-dots span {
+  width: 6px;
+  height: 6px;
+  background-color: #bdc1c6; /* Light gray for dots */
+  border-radius: 50%;
+  animation: typing-pulse 1s infinite ease-in-out;
+}
+
+.chat-container.dark-theme .typing-dots span {
+    background-color: #bdc1c6;
+}
+
+@keyframes typing-pulse {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-3px); }
+}
+
+.typing-dots span:nth-child(1) { animation-delay: -0.3s; }
+.typing-dots span:nth-child(2) { animation-delay: -0.15s; }
+
+.typing-text {
+  font-size: 0.85rem;
+  color: #bdc1c6; /* Light gray for typing text */
+}
+
+.chat-container.dark-theme .typing-text {
+    color: #bdc1c6;
+}
+
+.input-container {
+  background-color: #1a1a1a; /* Dark background for input */
+  padding: 1rem 1.5rem;
+  display: flex;
+  gap: 0.75rem; /* Reduced gap */
+  align-items: center;
+  border-top: 1px solid #555; /* Darker Border */
+  box-shadow: 0 -1px 3px rgba(0, 0, 0, 0.5); /* Darker shadow */
+  transition: background-color 0.3s ease, border-top-color 0.3s ease;
+  position: sticky; /* Sticky bottom */
+  bottom: 0;
+}
+
+.chat-container.dark-theme .input-container {
+    background-color: #333;
+    border-top-color: #555;
+}
+
+.input-field-area {
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    background-color: #333333; /* Dark background for input field */
+    border: 1px solid #555; /* Darker Border */
+    border-radius: 24px; /* More rounded */
+    padding: 0.5rem 1rem; /* Adjusted padding */
+    transition: all 0.2s ease;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3); /* Darker inset shadow */
+}
+
+.chat-container.dark-theme .input-field-area:focus-within {
+    border-color: #4285F4; /* Primary Accent */
+    box-shadow: 0 0 0 2px rgba(66, 133, 244, 0.3); /* Primary Accent shadow */
+}
+
+.message-input {
+  flex-grow: 1; /* Take available space */
+  padding: 0; /* Remove padding as it's on the container */
+  border: none; /* Remove border */
+  outline: none; /* Remove outline */
+  font-size: 1rem;
+  background-color: transparent; /* Transparent background */
+  resize: none; /* Prevent vertical resize */
+  min-height: 20px;
+  max-height: 100px;
+  overflow-y: auto;
+  font-family: inherit;
+  color: #ffffff; /* Ensure input text is white */
+}
+
+.chat-container.dark-theme .message-input {
+    color: #F8F9FA;
+}
+
+.input-icons {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem; /* Gap between icons */
+    margin-left: 0.5rem; /* Space from input */
+}
+
+.input-icon {
+    color: #bdc1c6; /* Light gray for icon color */
+    cursor: pointer;
+    font-size: 1.1rem;
+    transition: color 0.2s ease;
+}
+
+.chat-container.dark-theme .input-icon {
+    color: #bdc1c6;
+}
+
+.input-icon:hover {
+    color: #ffffff; /* White on hover */
+}
+
+.chat-container.dark-theme .input-icon:hover {
+    color: white;
+}
+
+.send-button {
+  background-color: #4285F4; /* Primary Accent */
+  color: white; /* White icon */
+  border: none;
+  width: 44px; /* FAB size */
+  height: 44px; /* FAB size */
+  border-radius: 50%; /* Circular */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); /* Darker FAB shadow */
+}
+
+.send-button:hover {
+  background-color: #3367D6; /* Darker Primary Accent */
+  transform: scale(1.05); /* Subtle scale on hover */
+}
+
+.send-button:disabled {
+  background-color: #555; /* Darker gray when disabled */
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+  opacity: 0.7;
+}
+
+.send-icon {
+  width: 24px; /* Icon size */
+  height: 24px; /* Icon size */
+  fill: currentColor; /* Use parent color */
+}
+
+/* Message loading animation (dots) */
+.message-loading-indicator {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.6rem 1.2rem;
+    background-color: rgba(51, 51, 51, 0.9); /* Dark background with transparency */
+    border-radius: 18px;
+    width: fit-content;
+    margin: 0.5rem 0;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5); /* Darker shadow */
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.1); /* Subtle white border */
+}
+
+.chat-container.dark-theme .message-loading-indicator {
+    background-color: rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    box-shadow: 0 1px 3px rgba(255, 255, 255, 0.1);
+}
+
+.message-loading-dots span {
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    margin: 0 1px;
+    background-color: #bdc1c6; /* Light gray for dots */
+    border-radius: 50%;
+    animation: typing-pulse 1s infinite ease-in-out;
+}
+
+.chat-container.dark-theme .message-loading-dots span {
+    background-color: #bdc1c6;
+}
+
+.message-loading-dots span:nth-child(1) { animation-delay: -0.3s; }
+.message-loading-dots span:nth-child(2) { animation-delay: -0.15s; }
+
+/* Copy button style (basic) */
+.copy-button {
+    background: transparent;
+    border: none;
+    color: #bdc1c6; /* Light gray for icon color */
+    cursor: pointer;
+    font-size: 0.9rem;
+    margin-left: 0.5rem;
+    transition: color 0.2s ease;
+}
+
+.chat-container.dark-theme .copy-button {
+    color: #bdc1c6;
+}
+
+.copy-button:hover {
+    color: #ffffff; /* White on hover */
+}
+
+.chat-container.dark-theme .copy-button:hover {
+    color: white;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .chat-header,
+  .messages-container,
+  .input-container {
+    padding: 0.8rem 1rem;
+  }
+
+  .message {
+    max-width: 90%; /* Adjusted max width */
+    /* Padding and border-radius handled by message-sent/received */
+  }
+
+  .chat-header h2 {
+    font-size: 1.2rem; /* Slightly smaller header font */
+  }
+
+  .header-controls {
+    gap: 0.5rem; /* Reduce gap in header controls */
+  }
+
+  .profile-dropdown-placeholder,
+  .logout-button {
+    padding: 0.4rem 0.8rem; /* Adjust button/placeholder padding */
+    font-size: 0.8rem; /* Slightly smaller font */
+  }
+
+  .online-status {
+    font-size: 0.75rem; /* Smaller online status font */
+  }
+
+  .messages-container {
+    padding: 1rem; /* Adjust messages container padding */
+    gap: 0.5rem; /* Reduce gap between messages */
+  }
+
+  .message-avatar-container {
+    width: 28px; /* Smaller avatar size */
+    height: 28px; /* Smaller avatar size */
+  }
+
+  .sender-name {
+    font-size: 0.8rem; /* Smaller sender name font */
+  }
+
+  .message-text {
+    font-size: 0.95rem; /* Slightly smaller message text */
+  }
+
+  .message-timestamp {
+    font-size: 0.6rem; /* Smaller timestamp font */
+  }
+
+  .typing-indicator {
+      padding: 0.5rem 1rem; /* Adjust typing indicator padding */
+      border-radius: 16px;
+  }
+
+  .typing-dots span {
+      width: 5px;
+      height: 5px;
+  }
+
+  .typing-text {
+      font-size: 0.8rem; /* Smaller typing text font */
+  }
+
+  .input-icons {
+      gap: 0.4rem;
+      margin-left: 0.4rem;
+  }
+
+  .input-icon {
+      font-size: 1rem;
+  }
+
+  .send-button {
+    width: 40px; /* Smaller send button size */
+    height: 40px; /* Smaller send button size */
+  }
+
+  .send-icon {
+    width: 20px; /* Smaller send icon size */
+    height: 20px; /* Smaller send icon size */
+  }
+
+  .message-content {
+    font-size: 0.95rem;
+    /* Color is handled by .message-sent and .message-received */
+  }
+
+  .message-input {
+    font-size: 0.95rem;
+    /* Color is handled by input-field-area or default */
+  }
+}
+
+/* Add a media query for larger screens if specific desktop styles are needed */
+/*
+@media (min-width: 769px) {
+  .message {
+    max-width: 60%; // Example: narrower messages on desktop
+  }
+  .messages-container {
+     padding: 1.5rem; // Example: more padding on desktop
+  }
+}
+*/

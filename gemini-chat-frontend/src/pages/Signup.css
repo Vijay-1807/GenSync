@@ -1,0 +1,292 @@
+/* Reusing the same styles as Login.css since they share the same design */
+.auth-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 2rem;
+  background: linear-gradient(to right, #0066ff, #ff3366); /* Apply requested gradient */
+  font-family: 'Roboto', sans-serif; /* Google Font */
+  color: #202124; /* Text Color */
+  overflow: hidden;
+  position: relative;
+}
+
+/* Optional: Add some background decorative elements */
+.auth-container::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(66, 133, 244, 0.1) 0%, rgba(66, 133, 244, 0) 70%); /* Primary Accent transparent radial gradient */
+    animation: rotateBackground 20s linear infinite;
+}
+
+@keyframes rotateBackground {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* Dark theme for auth pages (basic) */
+.auth-container.dark-theme {
+    background: linear-gradient(135deg, #333 0%, #555 100%);
+    color: #F8F9FA;
+}
+
+.auth-box {
+  background-color: #333; /* Grey form container */
+  padding: 2.5rem;
+  border-radius: 16px; /* More rounded */
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3); /* Darker shadow for dark theme */
+  width: 100%;
+  max-width: 400px;
+  transform: translateY(0);
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Springy transition */
+  backdrop-filter: blur(8px); /* Glassmorphism */
+  border: 1px solid rgba(255, 255, 255, 0.1); /* Subtle white border */
+  color: #F8F9FA; /* White text */
+}
+
+.auth-container.dark-theme .auth-box {
+    background-color: rgba(0, 0, 0, 0.7); /* Darker transparent background */
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    box-shadow: 0 10px 30px rgba(255, 255, 255, 0.08);
+}
+
+.auth-box:hover {
+  transform: translateY(-5px) scale(1.01); /* Lift and slightly scale */
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15); /* Larger shadow on hover */
+}
+
+.auth-container.dark-theme .auth-box:hover {
+    box-shadow: 0 15px 40px rgba(255, 255, 255, 0.12);
+}
+
+.auth-title {
+  color: #F8F9FA; /* White text for title */
+  margin-bottom: 2rem;
+  text-align: center;
+  font-size: 2.2rem;
+  font-weight: 600;
+  position: relative;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.05); /* Subtle text shadow */
+}
+
+.auth-container.dark-theme .auth-title {
+    color: #F8F9FA; /* Background */
+    text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.05);
+}
+
+.auth-title::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 4px;
+  background: linear-gradient(to right, #4285F4, #34A853); /* Gradient underline */
+  border-radius: 2px;
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.auth-input {
+  width: 100%;
+  padding: 1rem 1.2rem; /* Adjusted padding */
+  border: 1px solid #555; /* Darker Border */
+  border-radius: 8px; /* Rounded corners */
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  background-color: #444; /* Darker background for input */
+  color: #F8F9FA; /* White text */
+}
+
+.auth-container.dark-theme .auth-input {
+    background-color: #555;
+    border-color: #777;
+    color: #F8F9FA;
+}
+
+.auth-input:focus {
+  border-color: #4285F4; /* Primary Accent */
+  outline: none;
+  background-color: #555; /* Slightly lighter dark background on focus */
+  box-shadow: 0 0 0 3px rgba(66, 133, 244, 0.2); /* Primary Accent shadow */
+  transform: translateY(-2px); /* Lift on focus */
+}
+
+.auth-container.dark-theme .auth-input:focus {
+    background-color: #666;
+    border-color: #4285F4;
+    box-shadow: 0 0 0 3px rgba(66, 133, 244, 0.3);
+}
+
+.auth-input::placeholder { /* Style placeholder text */
+  color: #bdc1c6; /* Light gray for placeholder */
+  opacity: 1; /* Ensure placeholder is visible */
+}
+
+.auth-button {
+  width: 100%;
+  padding: 1rem;
+  background: linear-gradient(to right, #0066ff, #ff3366); /* Updated gradient */
+  color: white; /* White text */
+  border: none;
+  border-radius: 8px; /* Rounded corners */
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  position: relative; /* For ripple effect */
+  overflow: hidden; /* For ripple effect */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.auth-button::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 5px;
+    height: 5px;
+    background: rgba(255, 255, 255, 0.5); /* White ripple color */
+    border-radius: 50%;
+    opacity: 0;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+}
+
+.auth-button:active::before {
+    animation: ripple 0.6s linear;
+}
+
+@keyframes ripple {
+    0% { transform: translate(-50%, -50%) scale(1); opacity: 0.5; }
+    100% { transform: translate(-50%, -50%) scale(40); opacity: 0; }
+}
+
+.auth-button:hover {
+  background: linear-gradient(to right, #0052cc, #cc2952); /* Darker gradient on hover */
+  transform: translateY(-2px); /* Lift on hover */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.auth-button:active {
+  transform: translateY(0); /* Press down */
+}
+
+.auth-button:disabled {
+  background: #DADCE0; /* Light Border */
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+  opacity: 0.7; /* Indicate disabled state */
+}
+
+.auth-link {
+  margin-top: 1.5rem;
+  text-align: center;
+  color: #bdc1c6; /* Light gray for link text */
+  font-size: 0.95rem;
+}
+
+.auth-container.dark-theme .auth-link {
+    color: #bdc1c6;
+}
+
+.auth-link a {
+  color: #4285F4; /* Primary Accent */
+  text-decoration: none;
+  font-weight: 500; /* Adjusted font weight */
+  transition: color 0.3s ease;
+  margin-left: 0.5rem;
+}
+
+.auth-link a:hover {
+  color: #3367D6; /* Darker Primary Accent */
+  text-decoration: underline;
+}
+
+.error-message {
+  color: #FAD2CF; /* Light red for errors */
+  background-color: #D93025; /* Dark red background */
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  font-size: 0.95rem;
+  border: 1px solid #F28B82; /* Darker red border */
+  animation: shake 0.5s ease-in-out;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  75% { transform: translateX(5px); }
+}
+
+/* Loading spinner styles */
+.loading-spinner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background: linear-gradient(135deg, #e8f0fe 0%, #f1f3f4 100%); /* Light gradient */
+    color: #202124; /* Text Color */
+}
+
+.auth-container.dark-theme .loading-spinner {
+    background: linear-gradient(135deg, #333 0%, #555 100%);
+    color: #F8F9FA;
+}
+
+.spinner {
+    width: 50px;
+    height: 50px;
+    border: 4px solid rgba(66, 133, 244, 0.3); /* Primary Accent with transparency */
+    border-top-color: #4285F4; /* Primary Accent */
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 1rem;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Responsive adjustments */
+@media (max-width: 480px) {
+  .auth-box {
+    padding: 2rem;
+    margin: 1rem;
+  }
+
+  .auth-title {
+    font-size: 1.8rem;
+  }
+
+  .auth-input {
+    padding: 0.8rem 1rem;
+  }
+
+  .auth-button {
+    padding: 0.9rem;
+    font-size: 1rem;
+  }
+
+  .auth-link {
+    font-size: 0.9rem;
+  }
+} 
